@@ -11,6 +11,7 @@ const AccountSchema = new mongoose.Schema({
   rateExpiration: String,
   rewards: { type: Number, default: 0 },
   lastUsed: Number,
+  statementCycleDay: { type: Number, min: 1, max: 31 }, // Day of month for statement cycle
   position: { type: Number, required: true },
   userId: { type: String, required: true } // For multi-user support
 }, { timestamps: true });

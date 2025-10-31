@@ -1,4 +1,5 @@
 export interface Account {
+  _id?: string;
   id: string;
   accountName: string;
   accountNumber?: string;
@@ -8,7 +9,12 @@ export interface Account {
   interestRate?: number;
   rateExpiration?: string;
   rewards?: number;
+  lastUsed?: number;
+  statementCycleDay?: number;
   position: number;
+  userId?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface SummaryTotals {

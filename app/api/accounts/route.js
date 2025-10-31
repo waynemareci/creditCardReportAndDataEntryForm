@@ -17,6 +17,13 @@ export async function POST(request) {
   try {
     const data = await request.json();
     await connectToDatabase();
+
+    // If position not provided, set to end of list
+    if (data.position === undefined) {
+      const count = await Account.countDocuments({ userId: 'current-user-id' });
+      data.position = count;
+    }
+
     const account = await Account.create({
       ...data,
       userId: 'current-user-id'
