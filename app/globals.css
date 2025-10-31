@@ -1,26 +1,72 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Sortable column styles */
+th.sortable {
+  cursor: pointer;
+}
+
+th.sortable:hover {
+  background-color: #f0f0f0;
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  .print-only {
+    display: table-cell !important;
+  }
+  
+  table {
+    width: 100%;
+    table-layout: fixed;
+  }
+  
+  th, td {
+    font-size: 8px;
+    padding: 2px !important;
+    overflow: visible;
+    white-space: normal;
+    word-wrap: break-word;
+    height: auto;
+  }
+  
+  /* Hide form when printing */
+  form, 
+  button.bg-blue-500,
+  .mb-6:first-child {
+    display: none !important;
+  }
+  
+  /* Column widths for print */
+  th:nth-child(1), td:nth-child(1) { width: 12%; } /* Account Name */
+  th:nth-child(2), td:nth-child(2) { width: 8%; } /* Account Number */
+  th:nth-child(3), td:nth-child(3) { width: 8%; } /* Credit Limit */
+  th:nth-child(4), td:nth-child(4) { width: 8%; } /* Amount Owed */
+  th:nth-child(5), td:nth-child(5) { width: 10%; } /* Amount Available */
+  th:nth-child(6), td:nth-child(6) { width: 10%; } /* Minimum Payment */
+  th:nth-child(7), td:nth-child(7) { width: 7%; }  /* Interest Rate */
+  th:nth-child(8), td:nth-child(8) { width: 10%; }  /* Percent Utilization */
+  th:nth-child(9), td:nth-child(9) { width: 12%; }  /* Rate Expiration */
+  th:nth-child(10), td:nth-child(10) { width: 8%; } /* Rewards */
+  th:nth-child(11), td:nth-child(11) { width: 7%; } /* Last Used */
+}
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --foreground-rgb: 0, 0, 0;
+  --background-start-rgb: 214, 219, 220;
+  --background-end-rgb: 255, 255, 255;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
 }

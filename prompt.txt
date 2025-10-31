@@ -1,0 +1,33 @@
+Build a cloud-based web application with the following features:
+
+A secure, user-friendly web form to input financial account information. The form will also be capable of deleting and making modifications to the field values of an existing account.
+
+Fields are: Account Name (text, required); Account Number (text, not required); Credit Limit (number, required); Amount Owed (number, not required); Minimum Monthly Payment (number, not required); Interest Rate (percentage, not required); Rate Expiration (date, not required); Rewards(number, not required). 
+
+Calculate a column "Amount Available" by subtracting "Amount Owed" from "Credit Limit".
+
+Currency will be US dollars.
+
+Each submission will be a row in a report.
+
+Provide summary calculation totals for these fields: "Credit Limit", "Amount Owed", "Amount Available" and "Minimum Monthly Payment".
+
+Store each submission in a cloud database.
+
+Provide a page that displays all stored entries in a styled spreadsheet-style table (with headers and rows/columns).
+
+Implement a feature by which each individual row can be moved up or down in the report.
+
+Include a "Print" button that formats the table for printing.
+
+Include a "Download CSV" button that exports the table data as a CSV file.
+
+The application will be deployed to Vercel.
+
+Ensure the code is modular, well-commented, and follows best practices for security and data validation.
+
+Please generate the code for both the frontend and backend, and include deployment instructions
+
+>>>>>>>>>>>>>>>>>>
+
+result living in accountlist3

@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Option 3: Accordion Sections</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: #fafbfc;
+            color: #24292f;
+            line-height: 1.6;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 750px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .back-nav {
+            margin-bottom: 1.5rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #57606a;
+            text-decoration: none;
+            font-size: 0.875rem;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover {
+            color: #24292f;
+        }
+
+        h1 {
+            font-size: 1.875rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #57606a;
+            font-size: 0.938rem;
+        }
+
+        /* Progress Indicator */
+        .progress {
+            margin: 2rem 0;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .progress-step {
+            flex: 1;
+            height: 4px;
+            background: #d0d7de;
+            border-radius: 2px;
+            transition: background 0.3s;
+        }
+
+        .progress-step.complete {
+            background: #0969da;
+        }
+
+        .progress-step.active {
+            background: #54aeff;
+        }
+
+        /* Form Container */
+        .form-container {
+            background: white;
+            border: 1px solid #d0d7de;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        /* Accordion Sections */
+        .accordion-section {
+            border-bottom: 1px solid #d0d7de;
+        }
+
+        .accordion-section:last-child {
+            border-bottom: none;
+        }
+
+        .accordion-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 1.5rem;
+            cursor: pointer;
+            background: white;
+            transition: background 0.15s;
+        }
+
+        .accordion-header:hover {
+            background: #f6f8fa;
+        }
+
+        .accordion-header.active {
+            background: #f6f8fa;
+            border-bottom: 1px solid #d0d7de;
+        }
+
+        .accordion-title {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .section-number {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 28px;
+            height: 28px;
+            background: #f6f8fa;
+            border-radius: 50%;
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #57606a;
+        }
+
+        .accordion-header.active .section-number {
+            background: #0969da;
+            color: white;
+        }
+
+        .accordion-header.complete .section-number {
+            background: #1a7f37;
+            color: white;
+        }
+
+        .section-info h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 0.125rem;
+        }
+
+        .section-info p {
+            font-size: 0.813rem;
+            color: #57606a;
+        }
+
+        .accordion-icon {
+            font-size: 1.25rem;
+            color: #57606a;
+            transition: transform 0.2s;
+        }
+
+        .accordion-header.active .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .accordion-content.open {
+            max-height: 1000px;
+        }
+
+        .accordion-body {
+            padding: 1.5rem;
+            background: #f6f8fa;
+        }
+
+        /* Form Fields */
+        .field-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .field-group:last-child {
+            margin-bottom: 0;
+        }
+
+        .field-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .field-row.single {
+            grid-template-columns: 1fr;
+        }
+
+        label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #24292f;
+        }
+
+        label .required {
+            color: #cf222e;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.625rem 0.875rem;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            font-size: 0.938rem;
+            background: white;
+            transition: all 0.2s;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #0969da;
+            box-shadow: 0 0 0 3px rgba(9, 105, 218, 0.1);
+        }
+
+        input.error {
+            border-color: #cf222e;
+        }
+
+        .field-hint {
+            font-size: 0.813rem;
+            color: #57606a;
+            margin-top: 0.375rem;
+        }
+
+        .field-error {
+            font-size: 0.813rem;
+            color: #cf222e;
+            margin-top: 0.375rem;
+            display: none;
+        }
+
+        input.error + .field-error {
+            display: block;
+        }
+
+        /* Section Actions */
+        .section-actions {
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #d0d7de;
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        .btn-next {
+            padding: 0.625rem 1.25rem;
+            background: #0969da;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.938rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-next:hover {
+            background: #0550ae;
+        }
+
+        /* Final Actions */
+        .final-actions {
+            margin-top: 1.5rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 6px;
+            font-size: 0.938rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-secondary {
+            background: white;
+            border: 1px solid #d0d7de;
+            color: #24292f;
+        }
+
+        .btn-secondary:hover {
+            background: #f6f8fa;
+        }
+
+        .btn-primary {
+            background: #1a7f37;
+            color: white;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: #116329;
+        }
+
+        /* Success Toast */
+        .toast {
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            background: #1a7f37;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            display: none;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(400px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .field-row {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="back-nav">
+            <a href="#" class="back-link">← Back to Accounts</a>
+        </div>
+
+        <h1>Add New Account</h1>
+        <p class="subtitle">Complete the sections below to add your credit account</p>
+
+        <!-- Progress Indicator -->
+        <div class="progress">
+            <div class="progress-step active"></div>
+            <div class="progress-step"></div>
+            <div class="progress-step"></div>
+        </div>
+
+        <form id="accountForm">
+            <div class="form-container">
+                <!-- Section 1: Account Information -->
+                <div class="accordion-section">
+                    <div class="accordion-header active" onclick="toggleSection(this)">
+                        <div class="accordion-title">
+                            <div class="section-number">1</div>
+                            <div class="section-info">
+                                <h3>Account Information</h3>
+                                <p>Basic details and identification</p>
+                            </div>
+                        </div>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content open">
+                        <div class="accordion-body">
+                            <div class="field-group">
+                                <div class="field-row single">
+                                    <div>
+                                        <label for="accountName">
+                                            Account Name
+                                            <span class="required">*</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            id="accountName"
+                                            name="accountName"
+                                            placeholder="e.g., Chase Sapphire Reserve"
+                                            required
+                                        />
+                                        <span class="field-error">Account name is required</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field-group">
+                                <div class="field-row single">
+                                    <div>
+                                        <label for="accountNumber">Account Number</label>
+                                        <input
+                                            type="text"
+                                            id="accountNumber"
+                                            name="accountNumber"
+                                            placeholder="Last 4 digits (optional)"
+                                        />
+                                        <span class="field-hint">For identification purposes only</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section-actions">
+                                <button type="button" class="btn-next" onclick="nextSection(1)">
+                                    Continue →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 2: Financial Details -->
+                <div class="accordion-section">
+                    <div class="accordion-header" onclick="toggleSection(this)">
+                        <div class="accordion-title">
+                            <div class="section-number">2</div>
+                            <div class="section-info">
+                                <h3>Financial Details</h3>
+                                <p>Credit limits, balances, and rates</p>
+                            </div>
+                        </div>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <div class="field-group">
+                                <div class="field-row">
+                                    <div>
+                                        <label for="creditLimit">
+                                            Credit Limit
+                                            <span class="required">*</span>
+                                        </label>
+                                        <input
+                                            type="number"
+                                            id="creditLimit"
+                                            name="creditLimit"
+                                            placeholder="0.00"
+                                            step="0.01"
+                                            min="0"
+                                            required
+                                        />
+                                        <span class="field-error">Credit limit is required</span>
+                                    </div>
+                                    <div>
+                                        <label for="amountOwed">Amount Owed</label>
+                                        <input
+                                            type="number"
+                                            id="amountOwed"
+                                            name="amountOwed"
+                                            placeholder="0.00"
+                                            step="0.01"
+                                            min="0"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field-group">
+                                <div class="field-row">
+                                    <div>
+                                        <label for="minimumPayment">Minimum Payment</label>
+                                        <input
+                                            type="number"
+                                            id="minimumPayment"
+                                            name="minimumPayment"
+                                            placeholder="0.00"
+                                            step="0.01"
+                                            min="0"
+                                        />
+                                    </div>
+                                    <div>
+                                        <label for="interestRate">Interest Rate (%)</label>
+                                        <input
+                                            type="number"
+                                            id="interestRate"
+                                            name="interestRate"
+                                            placeholder="0.00"
+                                            step="0.01"
+                                            min="0"
+                                            max="100"
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="field-group">
+                                <div class="field-row single">
+                                    <div>
+                                        <label for="rateExpiration">Rate Expiration Date</label>
+                                        <input
+                                            type="date"
+                                            id="rateExpiration"
+                                            name="rateExpiration"
+                                        />
+                                        <span class="field-hint">When does this rate expire?</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="section-actions">
+                                <button type="button" class="btn-next" onclick="nextSection(2)">
+                                    Continue →
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 3: Optional Information -->
+                <div class="accordion-section">
+                    <div class="accordion-header" onclick="toggleSection(this)">
+                        <div class="accordion-title">
+                            <div class="section-number">3</div>
+                            <div class="section-info">
+                                <h3>Optional Information</h3>
+                                <p>Rewards and usage tracking (optional)</p>
+                            </div>
+                        </div>
+                        <span class="accordion-icon">▼</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-body">
+                            <div class="field-group">
+                                <div class="field-row">
+                                    <div>
+                                        <label for="rewards">Rewards Balance</label>
+                                        <input
+                                            type="number"
+                                            id="rewards"
+                                            name="rewards"
+                                            placeholder="0.00"
+                                            step="0.01"
+                                            min="0"
+                                        />
+                                        <span class="field-hint">Points or cash back value</span>
+                                    </div>
+                                    <div>
+                                        <label for="lastUsed">Last Used (1-12)</label>
+                                        <input
+                                            type="number"
+                                            id="lastUsed"
+                                            name="lastUsed"
+                                            placeholder="Month"
+                                            min="1"
+                                            max="12"
+                                            step="1"
+                                        />
+                                        <span class="field-hint">Track account activity</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Final Actions -->
+            <div class="final-actions">
+                <button type="button" class="btn btn-secondary">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Account</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Success Toast -->
+    <div class="toast" id="successToast">
+        ✓ Account saved successfully!
+    </div>
+
+    <script>
+        const progressSteps = document.querySelectorAll('.progress-step');
+
+        function toggleSection(header) {
+            const content = header.nextElementSibling;
+            const isOpen = content.classList.contains('open');
+
+            if (isOpen) {
+                content.classList.remove('open');
+                header.classList.remove('active');
+            } else {
+                content.classList.add('open');
+                header.classList.add('active');
+            }
+        }
+
+        function nextSection(currentSection) {
+            const headers = document.querySelectorAll('.accordion-header');
+            const contents = document.querySelectorAll('.accordion-content');
+
+            // Close current section
+            headers[currentSection - 1].classList.remove('active');
+            headers[currentSection - 1].classList.add('complete');
+            contents[currentSection - 1].classList.remove('open');
+
+            // Update progress
+            progressSteps[currentSection - 1].classList.remove('active');
+            progressSteps[currentSection - 1].classList.add('complete');
+            if (currentSection < 3) {
+                progressSteps[currentSection].classList.add('active');
+            }
+
+            // Open next section if available
+            if (currentSection < headers.length) {
+                headers[currentSection].classList.add('active');
+                contents[currentSection].classList.add('open');
+            }
+        }
+
+        // Form validation and submission
+        const form = document.getElementById('accountForm');
+        const requiredInputs = form.querySelectorAll('[required]');
+
+        requiredInputs.forEach(input => {
+            input.addEventListener('blur', function() {
+                validateField(this);
+            });
+
+            input.addEventListener('input', function() {
+                if (this.classList.contains('error')) {
+                    validateField(this);
+                }
+            });
+        });
+
+        function validateField(field) {
+            if (!field.value.trim()) {
+                field.classList.add('error');
+                return false;
+            } else {
+                field.classList.remove('error');
+                return true;
+            }
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            let isValid = true;
+            requiredInputs.forEach(input => {
+                if (!validateField(input)) {
+                    isValid = false;
+                }
+            });
+
+            if (isValid) {
+                const toast = document.getElementById('successToast');
+                toast.style.display = 'block';
+
+                setTimeout(() => {
+                    toast.style.display = 'none';
+                    window.location.href = 'report-option-3-visual.html';
+                }, 1500);
+            }
+        });
+    </script>
+</body>
+</html>
