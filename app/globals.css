@@ -44,15 +44,15 @@ th.sortable:hover {
   /* Column widths for print */
   th:nth-child(1), td:nth-child(1) { width: 12%; } /* Account Name */
   th:nth-child(2), td:nth-child(2) { width: 8%; } /* Account Number */
-  th:nth-child(3), td:nth-child(3) { width: 8%; } /* Credit Limit */
-  th:nth-child(4), td:nth-child(4) { width: 8%; } /* Amount Owed */
-  th:nth-child(5), td:nth-child(5) { width: 10%; } /* Amount Available */
-  th:nth-child(6), td:nth-child(6) { width: 10%; } /* Minimum Payment */
-  th:nth-child(7), td:nth-child(7) { width: 7%; }  /* Interest Rate */
-  th:nth-child(8), td:nth-child(8) { width: 10%; }  /* Percent Utilization */
-  th:nth-child(9), td:nth-child(9) { width: 12%; }  /* Rate Expiration */
-  th:nth-child(10), td:nth-child(10) { width: 8%; } /* Rewards */
-  th:nth-child(11), td:nth-child(11) { width: 7%; } /* Last Used */
+  th:nth-child(3), td:nth-child(3) { width: 9%; } /* Credit Limit */
+  th:nth-child(4), td:nth-child(4) { width: 9%; } /* Amount Owed */
+  th:nth-child(5), td:nth-child(5) { width: 9%; } /* Available */
+  th:nth-child(6), td:nth-child(6) { width: 9%; } /* Minimum Payment */
+  th:nth-child(7), td:nth-child(7) { width: 12%; }  /* Interest Rate (includes Rate Expiration) */
+  th:nth-child(8), td:nth-child(8) { width: 9%; }  /* Utilization */
+  th:nth-child(9), td:nth-child(9) { width: 8%; }  /* Rewards */
+  th:nth-child(10), td:nth-child(10) { width: 8%; } /* Last Used */
+  th:nth-child(11), td:nth-child(11) { width: 7%; } /* Actions */
 }
 
 * {
